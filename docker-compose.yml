@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: plutus/chronologix_db:1.0.0
+    volumes:
+      - chronologix_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - chronologix_network
+    restart: unless-stopped
+    ports:
+      - 5439:5432
+
+
+volumes:
+  chronologix_data:
+    driver: local
+
+networks:
+  chronologix_network: {}
