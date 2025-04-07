@@ -1,0 +1,109 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1.0.0-1-create-device-table"
+      author: obaid
+      labels: prod , dev
+      changes:
+        - createTable:
+            tableName: devices
+            columns:
+
+              - column: 
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              
+              - column: 
+                  name: source_device_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: device_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: ident
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: event_time
+                  type: timestamp(6) with time zone
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: payload
+                  type: jsonb
+
+              - column:
+                  name: created_at
+                  type: timestamp(6) with time zone
+              
+              - column:
+                  name: updated_at
+                  type: timestamp(6) with time zone
+            
+        - createIndex:
+            indexName: device_device_name_idx
+            tableName: devices
+            columns:
+              - column:
+                  name: device_name
+            unique: false
+
+
+        - createIndex:
+            indexName: device_source_device_id_idx
+            tableName: devices
+            columns:
+              - column:
+                  name: source_device_id
+            unique: false
+
+
+        - createIndex:
+            indexName: device_ident_idx
+            tableName: devices
+            columns:
+              - column:
+                  name: ident
+            unique: false
+
+      rollback:
+        - dropTable:
+            tableName: devices
+
+
+  - changeSet:
+        id: "1.0.0-2-create-sequences"
+        author: obaid
+        changes:
+
+          - createSequence:
+                sequenceName: device_id_seq
+                startValue: 1
+                incrementBy: 1
+                minValue: 1
+                cycle: false
+                cacheSize: 1
+                ifNotExists: true
+
+
+
+  - changeSet:
+      id: "1.0.0-3-add-default-value-to-id-columns"
+      author: obaid
+      changes:
+
+      - addDefaultValue:
+          tableName: devices
+          columnName: id
+          defaultValueSequenceNext: device_id_seq
