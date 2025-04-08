@@ -1,5 +1,8 @@
 package com.plutus360.chronologix.service;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +55,17 @@ public class DeviceService {
         log.debug("service : DeviceResponses : {}" , deviceResponses);
 
         return deviceResponses ;
+        
+    }
+
+
+
+    public List<DeviceResponse> findByIdsAndTimeRange(List<Long> ids , long from, long to) {
+        
+        OffsetDateTime fromTime = Instant.ofEpochSecond(from).atOffset(ZoneOffset.UTC);
+        OffsetDateTime toTime = Instant.ofEpochSecond(to).atOffset(ZoneOffset.UTC);
+
+       return deviceMapper.toDeviceResponseList(deviceRepo.findByIdsAndTimeRange(ids, fromTime, toTime));
         
     }
 
