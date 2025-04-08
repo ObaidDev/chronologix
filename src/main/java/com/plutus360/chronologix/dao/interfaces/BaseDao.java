@@ -1,5 +1,6 @@
 package com.plutus360.chronologix.dao.interfaces;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface BaseDao <T, I>{
@@ -15,4 +16,7 @@ public interface BaseDao <T, I>{
     Long count();
 
     public int updateInBatch(List<I> ids, T entity) ;
+
+
+    List<T> findByIdsAndTimeRange(List<I> ids, OffsetDateTime from, OffsetDateTime to);
 }
