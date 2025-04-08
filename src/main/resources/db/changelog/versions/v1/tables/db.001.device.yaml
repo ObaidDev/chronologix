@@ -89,8 +89,8 @@ databaseChangeLog:
 
           - createSequence:
                 sequenceName: device_id_seq
-                startValue: 1
-                incrementBy: 1
+                startValue: 99999
+                incrementBy: 50
                 minValue: 1
                 cycle: false
                 cacheSize: 1

@@ -31,7 +31,7 @@ public class Device {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "device_id_seq")
-    @SequenceGenerator(name = "device_id_seq", sequenceName = "device_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "device_id_seq", sequenceName = "device_id_seq", allocationSize = 50)
     private Long id;
 
     @Column(name = "source_device_id", nullable = false)
