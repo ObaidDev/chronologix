@@ -1,0 +1,102 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1.0.0-4-create-integration-tokens-table"
+      author: obaid
+      labels: prod, dev
+      changes:
+        - createTable:
+            tableName: integration_tokens
+            columns:
+
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: user_id
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: token_hash
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: token_info
+                  type: jsonb
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: active
+                  type: boolean
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: timestamp(6) with time zone
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+              - column:
+                  name: updated_at
+                  type: timestamp(6) with time zone
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+        - createIndex:
+            indexName: integration_tokens_token_hash_idx
+            tableName: integration_tokens
+            columns:
+              - column:
+                  name: token_hash
+            unique: true
+
+        - createIndex:
+            indexName: integration_tokens_user_id_idx
+            tableName: integration_tokens
+            columns:
+              - column:
+                  name: user_id
+            unique: false
+
+      rollback:
+        - dropTable:
+            tableName: integration_tokens
+
+
+  - changeSet:
+        id: "1.0.0-5-create-sequences"
+        author: obaid
+        changes:
+
+          - createSequence:
+                sequenceName: integration_tokens_id_seq
+                startValue: 99999
+                incrementBy: 2
+                minValue: 1
+                cycle: false
+                cacheSize: 1
+                ifNotExists: true
+
+  - changeSet:
+      id: "1.0.0-6-add-default-value-to-id-columns"
+      author: obaid
+      changes:
+
+      - addDefaultValue:
+          tableName: integration_tokens
+          columnName: id
+          defaultValueSequenceNext: integration_tokens_id_seq
