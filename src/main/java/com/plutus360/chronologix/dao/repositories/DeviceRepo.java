@@ -1,5 +1,7 @@
 package com.plutus360.chronologix.dao.repositories;
 
+import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +12,7 @@ import com.plutus360.chronologix.entities.Device;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -89,6 +92,23 @@ public class DeviceRepo implements BaseDao<Device , Long>{
     public int updateInBatch(List<Long> ids, Device entity) {
        
         throw new UnsupportedOperationException("Unimplemented method 'updateInBatch'");
+    }
+
+
+    @Override
+    public List<Device> findByIdsAndTimeRange(List<Long> ids, OffsetDateTime from, OffsetDateTime to) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        String jpql = "SELECT d FROM Device d WHERE d.sourceDeviceId IN :ids AND d.serverTimestamp BETWEEN :from AND :to ORDER BY d.id";
+
+        TypedQuery<Device> query = em.createQuery(jpql, Device.class);
+        query.setParameter("ids", ids);
+        query.setParameter("from", from);
+        query.setParameter("to", to);
+
+        return query.getResultList();
     }
 
 
