@@ -2,6 +2,7 @@ package com.plutus360.chronologix.dao.repositories;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import com.plutus360.chronologix.dao.interfaces.BaseDao;
 import com.plutus360.chronologix.entities.IntegrationToken;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -84,4 +86,24 @@ public class IntegrationTokenRepo implements BaseDao<IntegrationToken , Long>{
         throw new UnsupportedOperationException("Unimplemented method 'findByIdsAndTimeRange'");
     }
     
+
+
+    public Optional<IntegrationToken> findToken(String tokenHash) {
+        
+        if (tokenHash == null || tokenHash.isEmpty()) {
+            return Optional.empty();
+        }
+        
+        String jpql = "SELECT d FROM IntegrationToken d WHERE d.tokenHash = :tokenHash";
+        
+        try {
+            IntegrationToken token = em.createQuery(jpql, IntegrationToken.class)
+                    .setParameter("tokenHash", tokenHash)
+                    .getSingleResult();
+            return Optional.of(token);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
 }
