@@ -41,6 +41,10 @@ public class IntegrationToken {
     @Column(name = "active", nullable = false)
     private Boolean active;
 
+
+    @Column(name = "expired_at", columnDefinition = "timestamp(6) with time zone")
+    private OffsetDateTime expiredAt;
+
     @Column(name = "created_at", columnDefinition = "timestamp(6) with time zone")
     private OffsetDateTime createdAt;
 
