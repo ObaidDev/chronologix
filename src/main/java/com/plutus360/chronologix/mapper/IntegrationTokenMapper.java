@@ -89,7 +89,7 @@ public class IntegrationTokenMapper {
         StringBuilder tokenBuilder = new StringBuilder(64);
         
         tokenBuilder.append(integrationTokenRequest.getName().replaceAll("[^a-zA-Z0-9]", ""));
-        tokenBuilder.append("__");
+        tokenBuilder.append("_");
         
         // Append 32 random alphanumeric chars
         for (int i = 0; i < 32; i++) {
