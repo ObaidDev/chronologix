@@ -47,6 +47,12 @@ databaseChangeLog:
                     nullable: false
 
               - column:
+                  name: expired_at
+                  type: timestamp(6) with time zone
+                  constraints:
+                    nullable: true
+
+              - column:
                   name: created_at
                   type: timestamp(6) with time zone
                   defaultValueComputed: CURRENT_TIMESTAMP
