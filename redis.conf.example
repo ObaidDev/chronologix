@@ -1,0 +1,5 @@
+# Disable default user
+user default off
+
+# Enable custom user with password and all permissions
+user devuser on >devpassword123 allkeys allcommands
