@@ -88,11 +88,11 @@ public class IntegrationTokenMapper {
     private String generateToken(IntegrationTokenRequest integrationTokenRequest) {
         StringBuilder tokenBuilder = new StringBuilder(64);
         
-        tokenBuilder.append(integrationTokenRequest.getName().replaceAll("[^a-zA-Z0-9]", ""));
-        tokenBuilder.append("_");
+        // tokenBuilder.append(integrationTokenRequest.getName().replaceAll("[^a-zA-Z0-9]", ""));
+        // tokenBuilder.append("_");
         
         // Append 32 random alphanumeric chars
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < 64; i++) {
             tokenBuilder.append(ALPHANUMERIC.charAt(secureRandom.nextInt(ALPHANUMERIC.length())));
         }
         
