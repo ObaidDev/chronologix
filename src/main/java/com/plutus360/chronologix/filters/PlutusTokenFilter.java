@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.util.List;
 
 
-import com.fasterxml.jackson.core.exc.StreamWriteException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plutus360.chronologix.dtos.ErrorResponse;
 import com.plutus360.chronologix.exception.InvalideTokenException;
-import com.plutus360.chronologix.service.IntegrationTokenService;
+import com.plutus360.chronologix.utils.ACLManager;
+
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,9 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 public class PlutusTokenFilter implements Filter{
 
 
-    private final String targetEndpoint;
+    private final List<String> targetEndpoints;
 
-    private final IntegrationTokenService integrationTokenService;
+    private final ACLManager aclManager;
 
 
 
@@ -45,7 +44,11 @@ public class PlutusTokenFilter implements Filter{
         String requestPath = httpRequest.getServletPath();
         String httpMethod = httpRequest.getMethod();
 
-        if (requestPath.contains(targetEndpoint)) {
+
+        // ✅ Check if requestPath matches any of the target endpoints
+        boolean matches = targetEndpoints.stream().anyMatch(requestPath::contains);
+
+        if (matches) {
             // Extract the PlutusAuthorization header
             String plutusToken = httpRequest.getHeader("PlutusAuthorization");
             
@@ -56,7 +59,7 @@ public class PlutusTokenFilter implements Filter{
 
 
                 try {
-                    integrationTokenService.checkAcess(plutusToken, "gw" + requestPath, httpMethod);
+                    aclManager.checkAcess(plutusToken, "gw" + requestPath, httpMethod);
                 } catch (RuntimeException ex) {
                     handleUnableToProccessIteamException(ex, response);
                     return;
@@ -67,8 +70,10 @@ public class PlutusTokenFilter implements Filter{
             }
 
             else {
-                
-                throw new InvalideTokenException("Missing PlutusAuthorization header");
+                handleUnableToProccessIteamException(
+                    new InvalideTokenException("Missing PlutusAuthorization header"), 
+                    response);
+                return;
             }
         }
         
@@ -80,7 +85,7 @@ public class PlutusTokenFilter implements Filter{
 
 
 
-    private void handleUnableToProccessIteamException(RuntimeException ex , ServletResponse response) throws StreamWriteException, DatabindException, IOException {
+    private void handleUnableToProccessIteamException(RuntimeException ex , ServletResponse response) throws IOException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN); // Or other status

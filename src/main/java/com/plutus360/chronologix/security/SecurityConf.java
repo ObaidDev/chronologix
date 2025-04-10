@@ -2,11 +2,6 @@ package com.plutus360.chronologix.security;
 
 
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.security.PublicKey;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.X509EncodedKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,18 +10,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.plutus360.chronologix.filters.PlutusTokenFilter;
-import com.plutus360.chronologix.service.IntegrationTokenService;
+import com.plutus360.chronologix.utils.ACLManager;
 
-import java.security.KeyFactory;
-import java.util.Base64;
+import java.util.List;
 
-import org.springframework.core.io.ClassPathResource;
 
 
 
@@ -38,7 +30,7 @@ public class SecurityConf {
 
     private final CorsConfigurationSource corsConfigurationSource ;
 
-    private final IntegrationTokenService integrationTokenService;
+    private final ACLManager aclManager;
 
 
 
@@ -65,9 +57,9 @@ public class SecurityConf {
     @Autowired
     SecurityConf(
         CorsConfigurationSource corsConfigurationSource,
-        IntegrationTokenService integrationTokenService) { 
+        ACLManager aclManager) { 
         this.corsConfigurationSource = corsConfigurationSource;
-        this.integrationTokenService = integrationTokenService; 
+        this.aclManager = aclManager; 
     }
 
 
@@ -90,8 +82,12 @@ public class SecurityConf {
 
         http.addFilterAfter(
             PlutusTokenFilter.builder()
-                .targetEndpoint("devices")
-                .integrationTokenService(integrationTokenService)
+                .targetEndpoints(
+                    List.of(
+                        "devices"
+                    )
+                )
+                .aclManager(aclManager)
                 .build(), 
             SecurityContextHolderFilter.class
         );
