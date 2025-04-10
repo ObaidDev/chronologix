@@ -26,7 +26,7 @@ public class RedisConfig {
     @Value("${REDIS_PASSWORD}")
     private String redisPassword;
 
-    @Value("${CACHE_TTL:120}") // Default TTL in seconds, can be overridden
+    @Value("${CACHE_TTL:60}") // Default TTL in seconds, can be overridden
     private long cacheTtlSeconds;
 
 
@@ -56,7 +56,7 @@ public class RedisConfig {
         }
     
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(5));
+                .entryTtl(Duration.ofSeconds(cacheTtlSeconds));
     
         return RedisCacheManager.builder(connectionFactory)
                 .cacheDefaults(config)
