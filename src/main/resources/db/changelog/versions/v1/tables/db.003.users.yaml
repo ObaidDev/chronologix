@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1.0.0-7-users-table"
+      author: obaid
+      labels: prod, dev
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: first_name
+                  type: varchar(255)
+              - column:
+                  name: last_name
+                  type: varchar(255)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+  - changeSet : 
+      id: "1.0.0-8-add-index-to-users-table"
+      author: obaid
+      changes:  
+        - createIndex:
+            indexName: users_username_idx
+            tableName: users
+            columns:
+              - column:
+                  name: username
+            unique: true
+        - createIndex:
+            indexName: users_email_idx
+            tableName: users
+            columns:
+              - column:
+                  name: email
+            unique: true
