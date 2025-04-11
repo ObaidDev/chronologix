@@ -4,7 +4,8 @@ public enum Resource {
     MQTT("mqtt"),
     DEVICES("gw/devices"),
     GEOFENCES("gw/geofences"),
-    CALCS("gw/calcs");
+    CALCS("gw/calcs") ,
+    POIS("gw/pois") ;
 
     private final String path;
 
