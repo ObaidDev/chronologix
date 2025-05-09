@@ -16,7 +16,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.plutus360.chronologix.filters.JwtAuthenticationFilter;
 import com.plutus360.chronologix.filters.PlutusTokenFilter;
-import com.plutus360.chronologix.utils.ACLManager;
+import com.plutus360.chronologix.utils.CustomACLManager;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class SecurityConf {
     private final CorsConfigurationSource corsConfigurationSource ;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private final ACLManager aclManager;
+    private final CustomACLManager aclManager;
 
 
 
@@ -52,7 +52,6 @@ public class SecurityConf {
 
         "/tokens/**" ,
         "/devices/**" ,
-        "/auth/**" ,
 
     };
 
@@ -60,7 +59,7 @@ public class SecurityConf {
     @Autowired
     SecurityConf(
         CorsConfigurationSource corsConfigurationSource,
-        ACLManager aclManager,
+        CustomACLManager aclManager,
         JwtAuthenticationFilter jwtAuthenticationFilter
         ) { 
         this.corsConfigurationSource = corsConfigurationSource;
@@ -79,7 +78,7 @@ public class SecurityConf {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests( authorize  ->  {
                 authorize.requestMatchers(AUTH_WHITELIST).permitAll() ;
-                authorize.anyRequest().authenticated() ;
+                // authorize.anyRequest().authenticated() ;
             }
         )
         .formLogin(AbstractHttpConfigurer::disable)
@@ -95,7 +94,7 @@ public class SecurityConf {
         );
         
         // Add the JWT authentication filter for other endpoints
-        http.addFilterBefore(jwtAuthenticationFilter, SecurityContextHolderFilter.class);
+        // http.addFilterBefore(jwtAuthenticationFilter, SecurityContextHolderFilter.class);
 
         return http.build() ;
 
