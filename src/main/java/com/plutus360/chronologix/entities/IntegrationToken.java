@@ -41,6 +41,9 @@ public class IntegrationToken implements Serializable {
     @Column(name = "token_info", columnDefinition = "jsonb")
     private Map<String, Object> tokenInfo;
 
+    @Column(name = "token_indexed")
+    private String tokenIndexed;
+
     @Column(name = "active", nullable = false)
     private Boolean active;
 
