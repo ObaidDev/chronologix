@@ -147,6 +147,12 @@
 			<version>0.11.5</version>
 		</dependency>
 
+		<!-- trackswiflty utils -->
+		<dependency>
+			<groupId>com.trackswiftly.utils</groupId>
+			<artifactId>utils</artifactId>
+			<version>1.0.1</version>
+		</dependency>
 
 
 		<dependency>
