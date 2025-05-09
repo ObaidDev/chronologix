@@ -37,6 +37,12 @@ databaseChangeLog:
                   name: token_info
                   type: jsonb
                   constraints:
+                    nullable: false
+
+              - column:
+                  name: token_indexed
+                  type: text
+                  constraints:
                     nullable: true
 
               - column:
