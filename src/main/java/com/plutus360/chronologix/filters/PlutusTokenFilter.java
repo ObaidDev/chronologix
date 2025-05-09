@@ -7,7 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plutus360.chronologix.dtos.ErrorResponse;
 import com.plutus360.chronologix.exception.InvalideTokenException;
-import com.plutus360.chronologix.utils.ACLManager;
+import com.plutus360.chronologix.utils.CustomACLManager;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -29,7 +29,7 @@ public class PlutusTokenFilter implements Filter{
 
     private final List<String> targetEndpoints;
 
-    private final ACLManager aclManager;
+    private final CustomACLManager aclManager;
 
 
 
