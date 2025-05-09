@@ -31,12 +31,14 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     unique: true
+              
               - column:
-                  name: first_name
+                  name: full_name
                   type: varchar(255)
-              - column:
-                  name: last_name
-                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+                    
               - column:
                   name: created_at
                   type: timestamp
