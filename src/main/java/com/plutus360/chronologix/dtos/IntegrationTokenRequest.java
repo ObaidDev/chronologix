@@ -1,10 +1,9 @@
 package com.plutus360.chronologix.dtos;
 
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.plutus360.chronologix.types.TokenInfo;
+import com.trackswiftly.utils.dtos.TokenInfo;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
