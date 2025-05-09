@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import com.plutus360.chronologix.filters.JwtAuthenticationFilter;
 import com.plutus360.chronologix.filters.PlutusTokenFilter;
 import com.plutus360.chronologix.utils.ACLManager;
 
@@ -29,6 +30,7 @@ public class SecurityConf {
 
 
     private final CorsConfigurationSource corsConfigurationSource ;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private final ACLManager aclManager;
 
@@ -50,6 +52,7 @@ public class SecurityConf {
 
         "/tokens/**" ,
         "/devices/**" ,
+        "/auth/**" ,
 
     };
 
@@ -57,9 +60,12 @@ public class SecurityConf {
     @Autowired
     SecurityConf(
         CorsConfigurationSource corsConfigurationSource,
-        ACLManager aclManager) { 
+        ACLManager aclManager,
+        JwtAuthenticationFilter jwtAuthenticationFilter
+        ) { 
         this.corsConfigurationSource = corsConfigurationSource;
-        this.aclManager = aclManager; 
+        this.aclManager = aclManager;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
 
@@ -73,7 +79,7 @@ public class SecurityConf {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests( authorize  ->  {
                 authorize.requestMatchers(AUTH_WHITELIST).permitAll() ;
-                // authorize.anyRequest().authenticated() ;
+                authorize.anyRequest().authenticated() ;
             }
         )
         .formLogin(AbstractHttpConfigurer::disable)
@@ -82,15 +88,14 @@ public class SecurityConf {
 
         http.addFilterAfter(
             PlutusTokenFilter.builder()
-                .targetEndpoints(
-                    List.of(
-                        "devices"
-                    )
-                )
+                .targetEndpoints(List.of("devices"))
                 .aclManager(aclManager)
                 .build(), 
             SecurityContextHolderFilter.class
         );
+        
+        // Add the JWT authentication filter for other endpoints
+        http.addFilterBefore(jwtAuthenticationFilter, SecurityContextHolderFilter.class);
 
         return http.build() ;
 
