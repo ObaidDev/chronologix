@@ -2,12 +2,14 @@ package com.plutus360.chronologix.dao.repositories;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import com.plutus360.chronologix.entities.User;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lombok.Data;
@@ -81,6 +83,28 @@ public class UserRepo {
             return null;  // Return null if not found or handle accordingly
         }
     }
+
+
+
+    public Optional<User> findByEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return Optional.empty();
+        }
+
+        try {
+            String jpql = "SELECT u FROM User u WHERE u.email = :email";
+            TypedQuery<User> query = em.createQuery(jpql, User.class);
+            query.setParameter("email", email);
+            return Optional.ofNullable(query.getSingleResult());
+        } catch (NoResultException e) {
+            log.warn("No user found with email: {}", email);
+            return Optional.empty();
+        } catch (Exception e) {
+            log.error("Error finding user by email", e);
+            return Optional.empty();
+        }
+    }
+
 
 
 
