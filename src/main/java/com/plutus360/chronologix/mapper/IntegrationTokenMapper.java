@@ -13,7 +13,9 @@ import com.plutus360.chronologix.dtos.IntegrationTokenRequest;
 import com.plutus360.chronologix.dtos.IntegrationTokenResponse;
 import com.plutus360.chronologix.dtos.IntegrationTokenWithRaw;
 import com.plutus360.chronologix.entities.IntegrationToken;
-import com.plutus360.chronologix.types.TokenInfo;
+import com.trackswiftly.utils.base.services.ACLManager;
+import com.trackswiftly.utils.base.services.CompressedAclService;
+import com.trackswiftly.utils.dtos.TokenInfo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,8 +26,6 @@ public class IntegrationTokenMapper {
 
     private static final String ALPHANUMERIC = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final SecureRandom secureRandom = new SecureRandom(); // Reuse SecureRandom
-
-
 
 
     public List<IntegrationTokenResponse> toIntegrationTokenResponseList(List<IntegrationToken> integrationTokens) {
@@ -66,12 +66,15 @@ public class IntegrationTokenMapper {
 
     public IntegrationTokenWithRaw toIntegrationToken(IntegrationTokenRequest integrationTokenRequest) {
 
-        String token = generateToken(integrationTokenRequest);
+        String token = generateToken();
+        TokenInfo tokenInfo = integrationTokenRequest.getTokenInfo();
+        String compressedacl =  CompressedAclService.compressAcl((new ACLManager()).getAclTable(tokenInfo));
 
         IntegrationToken entity = IntegrationToken.builder()
             .name(integrationTokenRequest.getName())
             .active(integrationTokenRequest.getActive())
-            .tokenInfo(integrationTokenRequest.getTokenInfo())
+            .tokenInfo(tokenInfo)
+            .tokenIndexed(compressedacl)
             .userId("uu-sh-hello-testo")
             .tokenHash(hashToken(token))
             .expiredAt(integrationTokenRequest.getExpiredAt())
@@ -85,11 +88,8 @@ public class IntegrationTokenMapper {
 
 
 
-    private String generateToken(IntegrationTokenRequest integrationTokenRequest) {
+    private String generateToken() {
         StringBuilder tokenBuilder = new StringBuilder(64);
-        
-        // tokenBuilder.append(integrationTokenRequest.getName().replaceAll("[^a-zA-Z0-9]", ""));
-        // tokenBuilder.append("_");
         
         // Append 32 random alphanumeric chars
         for (int i = 0; i < 64; i++) {
