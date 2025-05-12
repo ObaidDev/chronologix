@@ -4,9 +4,6 @@ package com.plutus360.chronologix.utils;
 
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,12 +13,13 @@ import org.springframework.stereotype.Component;
 import com.plutus360.chronologix.entities.IntegrationToken;
 import com.plutus360.chronologix.exception.UnableToProccessIteamException;
 import com.plutus360.chronologix.service.IntegrationTokenService;
+import com.trackswiftly.utils.base.services.CompressedAclService;
 
-import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 
 
-@Data
+@Slf4j
 @Component
 public class CustomACLManager extends com.trackswiftly.utils.base.services.ACLManager{
 
@@ -57,11 +55,19 @@ public class CustomACLManager extends com.trackswiftly.utils.base.services.ACLMa
             throw new UnableToProccessIteamException("Token has expired");
         }
 
-        Map<String, Object> tokenInfo = integrationToken.getTokenInfo();
+        // Map<String, Object> tokenInfo = integrationToken.getTokenInfo();
 
 
         // Check access permissions
-        if (!hasAccess(getAclTable(tokenInfo), uri, method, null)) {
+        // if (!hasAccess(getAclTable(tokenInfo), uri, method, null)) {
+        //     throw new UnableToProccessIteamException("Access denied for token " + token);
+        // }
+
+        Map<String,Map<String,Set<String>>> tokenInfo = CompressedAclService.decompressAcl(integrationToken.getTokenIndexed());
+
+        log.info("🔑 Token info: {} ", tokenInfo);
+
+        if (!hasAccess(tokenInfo, uri, method, null)) {
             throw new UnableToProccessIteamException("Access denied for token " + token);
         }
 
