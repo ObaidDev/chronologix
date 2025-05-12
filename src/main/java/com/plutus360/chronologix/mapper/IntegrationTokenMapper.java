@@ -57,7 +57,7 @@ public class IntegrationTokenMapper {
         return IntegrationTokenResponse.builder()
                 .name(token.getName())
                 .active(token.getActive())
-                .tokenInfo((TokenInfo) token.getTokenInfo())
+                .tokenInfo(CompressedAclService.decompressAcl(token.getTokenIndexed()))
                 .createdAt(token.getCreatedAt())
                 .build();
     }
@@ -73,7 +73,7 @@ public class IntegrationTokenMapper {
         IntegrationToken entity = IntegrationToken.builder()
             .name(integrationTokenRequest.getName())
             .active(integrationTokenRequest.getActive())
-            .tokenInfo(tokenInfo)
+            // .tokenInfo((TokenInfo) (Map<? , ? >) CompressedAclService.decompressAcl(token.getTokenIndexed()))
             .tokenIndexed(compressedacl)
             .userId("uu-sh-hello-testo")
             .tokenHash(hashToken(token))
