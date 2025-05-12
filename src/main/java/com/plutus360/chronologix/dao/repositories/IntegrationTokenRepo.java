@@ -1,6 +1,7 @@
 package com.plutus360.chronologix.dao.repositories;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,7 +64,17 @@ public class IntegrationTokenRepo implements BaseDao<IntegrationToken , Long>{
 
     @Override
     public List<IntegrationToken> findByIds(List<Long> ids) {
-        throw new UnsupportedOperationException("Unimplemented method 'findByIds'");
+        
+         if (ids == null || ids.isEmpty()) {
+            
+            return Collections.emptyList();
+        }
+    
+        String jpql = "SELECT d FROM IntegrationToken d WHERE d.id IN :ids";
+        
+        return em.createQuery(jpql, IntegrationToken.class)
+                            .setParameter("ids", ids)
+                            .getResultList();
     }
 
     @Override
