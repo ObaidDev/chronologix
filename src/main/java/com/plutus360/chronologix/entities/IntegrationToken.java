@@ -4,12 +4,8 @@ package com.plutus360.chronologix.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 @Entity
 @Table(name = "integration_tokens")
@@ -37,9 +33,9 @@ public class IntegrationToken implements Serializable {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "token_info", columnDefinition = "jsonb")
-    private Map<String, Object> tokenInfo;
+    // @JdbcTypeCode(SqlTypes.JSON)
+    // @Column(name = "token_info", columnDefinition = "jsonb")
+    // private Map<String, Object> tokenInfo;
 
     @Column(name = "token_indexed")
     private String tokenIndexed;
