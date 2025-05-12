@@ -3,11 +3,12 @@ package com.plutus360.chronologix.dtos;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.trackswiftly.utils.dtos.TokenInfo;
 
 import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -27,8 +28,10 @@ public class IntegrationTokenResponse {
     private String name;
 
     // Use TokenInfo custom type for the token info details
+    // private TokenInfo tokenInfo;
+
     @JsonProperty("token.info")
-    private TokenInfo tokenInfo;
+    private Map<String, Map<String, Set<String>>> tokenInfo;
 
     @JsonProperty("active")
     private Boolean active;
