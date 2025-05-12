@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.plutus360.chronologix.dao.repositories.IntegrationTokenRepo;
 import com.plutus360.chronologix.dtos.IntegrationTokenRequest;
+import com.plutus360.chronologix.dtos.IntegrationTokenResponse;
 import com.plutus360.chronologix.dtos.IntegrationTokenWithRaw;
 import com.plutus360.chronologix.entities.IntegrationToken;
 import com.plutus360.chronologix.mapper.IntegrationTokenMapper;
@@ -75,6 +76,15 @@ public class IntegrationTokenService {
 
 
         return integrationTokenRepo.findToken(integrationTokenMapper.hashToken(token));
+    }
+
+
+
+    public List<IntegrationTokenResponse> findByIds(List<Long> ids) {
+        return integrationTokenRepo.findByIds(ids)
+            .stream()
+            .map(integrationTokenMapper::toIntegrationTokenResponse)
+            .toList();
     }
 
 
