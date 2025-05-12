@@ -88,7 +88,7 @@ public class PlutusTokenFilter implements Filter{
     private void handleUnableToProccessIteamException(RuntimeException ex , ServletResponse response) throws IOException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN); // Or other status
+        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpResponse.setContentType("application/json");
         
         // Write custom error response to the response body
