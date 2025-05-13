@@ -61,7 +61,7 @@ public class PlutusTokenFilter implements Filter{
                 try {
                     aclManager.checkAcess(plutusToken, "gw" + requestPath, httpMethod);
                 } catch (RuntimeException ex) {
-                    handleUnableToProccessIteamException(ex, response);
+                    handleUnableToProccessIteamException(ex, response , HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
 
@@ -72,7 +72,9 @@ public class PlutusTokenFilter implements Filter{
             else {
                 handleUnableToProccessIteamException(
                     new InvalideTokenException("Missing PlutusAuthorization header"), 
-                    response);
+                    response ,
+                    HttpServletResponse.SC_UNAUTHORIZED
+                    );
                 return;
             }
         }
@@ -85,10 +87,10 @@ public class PlutusTokenFilter implements Filter{
 
 
 
-    private void handleUnableToProccessIteamException(RuntimeException ex , ServletResponse response) throws IOException {
+    private void handleUnableToProccessIteamException(RuntimeException ex , ServletResponse response , HttpServletResponse responseCode) throws IOException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        httpResponse.setStatus(responseCode);
         httpResponse.setContentType("application/json");
         
         // Write custom error response to the response body
