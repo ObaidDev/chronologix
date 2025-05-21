@@ -101,6 +101,8 @@ public class IntegrationTokenRepo implements BaseDao<IntegrationToken , Long>{
 
     public Optional<IntegrationToken> findToken(String tokenHash) {
         
+        log.info("🗯️ Finding token with hash: {} in database level 🗯️", tokenHash);
+
         if (tokenHash == null || tokenHash.isEmpty()) {
             return Optional.empty();
         }
