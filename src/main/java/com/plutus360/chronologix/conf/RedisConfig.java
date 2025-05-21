@@ -29,7 +29,7 @@ public class RedisConfig {
     @Value("${REDIS_PASSWORD}")
     private String redisPassword;
 
-    @Value("${CACHE_TTL:60}") // Default TTL in seconds, can be overridden
+    @Value("${CACHE_TTL:600}") // Default TTL in seconds, can be overridden
     private long cacheTtlSeconds;
 
 
