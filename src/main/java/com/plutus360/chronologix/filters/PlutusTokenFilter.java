@@ -61,7 +61,7 @@ public class PlutusTokenFilter implements Filter{
                 try {
                     aclManager.checkAcess(plutusToken, "gw" + requestPath, httpMethod);
                 } catch (RuntimeException ex) {
-                    handleUnableToProccessIteamException(ex, response , HttpServletResponse.SC_UNAUTHORIZED);
+                    handleUnableToProccessIteamException(ex, response , HttpServletResponse.SC_FORBIDDEN);
                     return;
                 }
 
@@ -87,7 +87,7 @@ public class PlutusTokenFilter implements Filter{
 
 
 
-    private void handleUnableToProccessIteamException(RuntimeException ex , ServletResponse response , HttpServletResponse responseCode) throws IOException {
+    private void handleUnableToProccessIteamException(RuntimeException ex , ServletResponse response , int responseCode) throws IOException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         httpResponse.setStatus(responseCode);
