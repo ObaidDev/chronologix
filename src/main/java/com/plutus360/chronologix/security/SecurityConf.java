@@ -52,6 +52,7 @@ public class SecurityConf {
 
         "/tokens/**" ,
         "/devices/**" ,
+        "/auth/**"
 
     };
 
@@ -78,7 +79,7 @@ public class SecurityConf {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests( authorize  ->  {
                 authorize.requestMatchers(AUTH_WHITELIST).permitAll() ;
-                // authorize.anyRequest().authenticated() ;
+                authorize.anyRequest().authenticated() ;
             }
         )
         .formLogin(AbstractHttpConfigurer::disable)
@@ -94,7 +95,7 @@ public class SecurityConf {
         );
         
         // Add the JWT authentication filter for other endpoints
-        // http.addFilterBefore(jwtAuthenticationFilter, SecurityContextHolderFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, SecurityContextHolderFilter.class);
 
         return http.build() ;
 
