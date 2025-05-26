@@ -13,6 +13,10 @@ import com.plutus360.chronologix.entities.User;
 import com.plutus360.chronologix.service.AuthenticationService;
 import com.plutus360.chronologix.service.JwtService;
 
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
@@ -34,6 +38,9 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
+
+        log.info("Authenticating user with email: {}", loginUserDto.getEmail());
+        
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
