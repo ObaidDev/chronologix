@@ -54,12 +54,12 @@ public class PlutusTokenFilter implements Filter{
             
             if (plutusToken != null && !plutusToken.isEmpty()) {
 
-                log.info("Path : {} 🐤", requestPath);
+                log.info("Path : {} ", normalizePath(requestPath));
                 log.info("Method : {} 🚀", httpMethod);
 
 
                 try {
-                    aclManager.checkAcess(plutusToken, "gw" + requestPath, httpMethod);
+                    aclManager.checkAcess(plutusToken, normalizePath(requestPath), httpMethod);
                 } catch (RuntimeException ex) {
                     handleUnableToProccessIteamException(ex, response , HttpServletResponse.SC_FORBIDDEN);
                     return;
@@ -102,5 +102,19 @@ public class PlutusTokenFilter implements Filter{
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(httpResponse.getWriter(), errorResponse);
     
+    }
+
+    private String normalizePath(String requestPath) {
+        if (requestPath == null || requestPath.isEmpty()) {
+            return "";
+        }
+
+        String[] parts = requestPath.split("/");
+        for (String part : parts) {
+            if (!part.isEmpty()) {
+                return "gw/" + part;
+            }
+        }
+        return "";
     }
 }
