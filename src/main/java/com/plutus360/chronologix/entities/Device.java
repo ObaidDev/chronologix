@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "devices_partition")
+@Table(name = "devices")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
