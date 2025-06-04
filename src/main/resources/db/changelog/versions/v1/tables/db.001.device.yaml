@@ -12,7 +12,6 @@ databaseChangeLog:
                   name: id
                   type: bigint
                   constraints:
-                    primaryKey: true
                     nullable: false
               
               - column: 
@@ -50,6 +49,11 @@ databaseChangeLog:
               - column:
                   name: updated_at
                   type: timestamp(6) with time zone
+
+              - addPrimaryKey:
+                  columnNames: source_device_id, id
+                  constraintName: devices_pk
+                  tableName: devices
             
         - createIndex:
             indexName: device_device_name_idx
