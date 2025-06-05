@@ -6,7 +6,7 @@
       "methods": ["GET", "POST"]
     },
     "gw/devices": {
-      "methods": ["GET", "PUT", "DELETE"]
+      "methods": ["GET", "PUT", "DELETE","POST"]
     },
     "gw/calcs": {
       "methods": ["GET"]
