@@ -1,15 +1,17 @@
-[{
-  "token.name": "mqtt-access-token",
-  "token.active": true,
-  "token.info": {
-    "mqtt": {
-      "methods": ["GET", "POST"]
-    },
-    "gw/devices": {
-      "methods": ["GET", "PUT", "DELETE","POST"]
-    },
-    "gw/calcs": {
-      "methods": ["GET"]
+[
+  {
+    "token.name": "mqtt-access-token",
+    "token.active": true,
+    "token.info": {
+      "mqtt": {
+        "methods": ["GET", "POST"]
+      },
+      "gw/devices": {
+        "methods": ["GET", "PUT", "DELETE","POST"]
+      },
+      "gw/calcs": {
+        "methods": ["GET"]
+      }
     }
   }
-}]
+]
