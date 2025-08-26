@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,5 +70,15 @@ public class DeviceService {
         
     }
 
+
+    public List<Map<String , Object>> findByIdsAndTimeRangeWithFieldsSelection(
+        List<Long> ids, long from, long to, List<String> payloadFields
+    ) {
+
+        OffsetDateTime fromTime = Instant.ofEpochSecond(from).atOffset(ZoneOffset.UTC);
+        OffsetDateTime toTime = Instant.ofEpochSecond(to).atOffset(ZoneOffset.UTC);
+
+        return deviceRepo.findDevicesWithJsonbSelection(ids, payloadFields, fromTime, toTime);
+    }
     
 }
