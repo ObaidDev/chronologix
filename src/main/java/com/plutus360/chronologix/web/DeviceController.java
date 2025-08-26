@@ -1,6 +1,7 @@
 package com.plutus360.chronologix.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -64,5 +65,19 @@ public class DeviceController {
         return deviceService.findByIdsAndTimeRange(ids, from, to);
     }
 
-    
+
+
+    @GetMapping("/logs/fields/{ids}")
+    public List<Map<String, Object>> getDevicesByIdsAndTimeRangeWithFieldsSelection(
+            @PathVariable List<Long> ids,
+            @RequestParam long from,
+            @RequestParam long to ,
+            @RequestParam List<String> fields
+    ) {
+
+        log.info("Searching devices with IDs: {} from {} to {} with fields: {}", ids, from, to, fields);
+
+        return deviceService.findByIdsAndTimeRangeWithFieldsSelection(ids, from, to, fields);
+    }
+
 }
