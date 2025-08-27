@@ -1,0 +1,17 @@
+Create users using command line .
+
+# Set environment variables and run
+export APP_ADMIN_CREATE=true
+export APP_ADMIN_USERNAME=admin
+export APP_ADMIN_PASSWORD=securePassword123
+export APP_ADMIN_EMAIL=admin@company.com
+
+java -jar chronologix.jar
+
+# Or create user via command line
+java -jar chronologix.jar create-user johndoe john@example.com password123 USER
+
+
+
+## test the command line arguments using Maven! Here are the correct ways to do it : 
+mvn spring-boot:run -Dspring-boot.run.arguments="create-user johndoe john@example.com password123"
