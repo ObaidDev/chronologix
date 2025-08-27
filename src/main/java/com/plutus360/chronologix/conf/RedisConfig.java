@@ -5,11 +5,11 @@ import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisPassword;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+// import org.springframework.data.redis.cache.RedisCacheConfiguration;
+// import org.springframework.data.redis.cache.RedisCacheManager;
+// import org.springframework.data.redis.connection.RedisPassword;
+// import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+// import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,37 +34,37 @@ public class RedisConfig {
 
 
 
-    @Bean
-    public LettuceConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
-        redisConfig.setHostName(redisHost);
-        redisConfig.setPort(redisPort);
+    // @Bean
+    // public LettuceConnectionFactory redisConnectionFactory() {
+    //     RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
+    //     redisConfig.setHostName(redisHost);
+    //     redisConfig.setPort(redisPort);
 
-        if (redisUser != null && !redisUser.isEmpty()) {
-            redisConfig.setUsername(redisUser);
-        }
+    //     if (redisUser != null && !redisUser.isEmpty()) {
+    //         redisConfig.setUsername(redisUser);
+    //     }
 
-        redisConfig.setPassword(RedisPassword.of(redisPassword));
+    //     redisConfig.setPassword(RedisPassword.of(redisPassword));
 
-        return new LettuceConnectionFactory(redisConfig);
-    }
+    //     return new LettuceConnectionFactory(redisConfig);
+    // }
 
-    @Bean
-    public RedisCacheManager cacheManager(LettuceConnectionFactory connectionFactory) {
+    // @Bean
+    // public RedisCacheManager cacheManager(LettuceConnectionFactory connectionFactory) {
         
-        try {
-            connectionFactory.getConnection().ping();
-        } catch (Exception e) {
-            throw new IllegalStateException("❌ Failed to connect to Redis: " + e.getMessage(), e);
-        }
+    //     try {
+    //         connectionFactory.getConnection().ping();
+    //     } catch (Exception e) {
+    //         throw new IllegalStateException("❌ Failed to connect to Redis: " + e.getMessage(), e);
+    //     }
     
-        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(cacheTtlSeconds));
+    //     RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+    //             .entryTtl(Duration.ofSeconds(cacheTtlSeconds));
     
-        return RedisCacheManager.builder(connectionFactory)
-                .cacheDefaults(config)
-                .build();
-    }
+    //     return RedisCacheManager.builder(connectionFactory)
+    //             .cacheDefaults(config)
+    //             .build();
+    // }
 
 
 
