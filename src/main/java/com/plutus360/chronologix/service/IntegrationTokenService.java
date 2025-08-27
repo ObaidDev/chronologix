@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -87,6 +88,11 @@ public class IntegrationTokenService {
             .toList();
     }
 
+
+    @CacheEvict(value = "integrationTokens", key = "#token") // delete the token from cache 
+    public boolean deleteToken(String token) {
+       return integrationTokenRepo.deleteToken(token);
+    }
 
 
     
