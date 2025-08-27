@@ -119,4 +119,11 @@ public class IntegrationTokenRepo implements BaseDao<IntegrationToken , Long>{
         }
     }
 
+
+
+    public boolean deleteToken (String token) {
+        throw new UnsupportedOperationException("Unimplemented method 'deleteToken'");
+
+    }
+
 }
