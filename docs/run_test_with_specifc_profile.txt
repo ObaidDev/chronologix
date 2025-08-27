@@ -1,0 +1,21 @@
+# Run all tests
+mvn test
+
+# Run only the DeviceRepo integration test
+mvn test -Dtest=DeviceRepoIntegrationTest
+
+# Run with specific profile
+mvn test -Dspring.profiles.active=test
+
+
+# Clean and compile
+mvn clean compile test-compile
+
+# Run integration tests (with PostgreSQL container)
+mvn test -Dtest="*Integration*"
+
+# Run unit tests (with H2, faster)
+mvn test -Dtest="*Unit*"
+
+# Run specific test
+mvn test -Dtest=DeviceRepoIntegrationTest
