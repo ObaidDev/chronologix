@@ -17,20 +17,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class RedisConfig {
 
-    @Value("${REDIS_HOST}")
-    private String redisHost;
+    // @Value("${REDIS_HOST}")
+    // private String redisHost;
 
-    @Value("${REDIS_PORT}")
-    private int redisPort;
+    // @Value("${REDIS_PORT}")
+    // private int redisPort;
 
-    @Value("${REDIS_USER}")
-    private String redisUser;
+    // @Value("${REDIS_USER}")
+    // private String redisUser;
 
-    @Value("${REDIS_PASSWORD}")
-    private String redisPassword;
+    // @Value("${REDIS_PASSWORD}")
+    // private String redisPassword;
 
-    @Value("${CACHE_TTL:600}") // Default TTL in seconds, can be overridden
-    private long cacheTtlSeconds;
+    // @Value("${CACHE_TTL:600}") // Default TTL in seconds, can be overridden
+    // private long cacheTtlSeconds;
 
 
 
