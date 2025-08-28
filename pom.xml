@@ -1,213 +1,464 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.7</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.plutus360</groupId>
-	<artifactId>chronologix</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>chronologix</name>
-	<description>Demo project for Spring Boot</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
-	<properties>
-		<java.version>17</java.version>
-	</properties>
-	<dependencies>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.7</version>
+        <relativePath/>
+    </parent>
+    <groupId>com.plutus360</groupId>
+    <artifactId>chronologix</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>chronologix</name>
+    <description>Demo project for Spring Boot</description>
+    
+    <properties>
+        <java.version>17</java.version>
+        <testcontainers.version>1.20.6</testcontainers.version>
+        <native.maven.plugin.version>0.10.4</native.maven.plugin.version>
+    </properties>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+    <!-- Add Testcontainers BOM -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
+    <dependencies>
+        <!-- Dependencies remain the same -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.8.1</version>
-		</dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.8.1</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>6.1.13</version>
+        </dependency>
 
-		<!-- Support for programmatic and declarative transaction management for classes that implement special interfaces or any POJO -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>6.1.13</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>6.1.13</version>
-		</dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.4.10.Final</version>
+        </dependency>
 
-		<!-- ___________________ -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-hikaricp</artifactId>
+            <version>6.4.10.Final</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.1.0</version>
+        </dependency>
 
-		<!-- Spring Object/Relational Mapping which provides integration layers for popular object-relational mapping APIs, including JPA, JDO, and Hibernate. -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>6.1.13</version>
-		</dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
 
-		<!-- ___________________ -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.5</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.trackswiftly.utils</groupId>
+            <artifactId>utils</artifactId>
+            <version>1.0.7</version>
+        </dependency>
 
-		<!-- hibernate core with hikaricp connections pool manager -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
 
-		
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>6.4.10.Final</version>
-		</dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-hikaricp</artifactId>
-			<version>6.4.10.Final</version>
-		</dependency>
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<version>5.1.0</version>
-		</dependency>
+        <!-- Add H2 for native tests -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-		<!-- ___________________ -->
+    <build>
+        <plugins>
+            <!-- 
+            ========================================
+            GraalVM Native Image Plugin
+            ========================================
+            Purpose: Compiles Java application to native executable using GraalVM
+            Benefits: 
+            - Faster startup times (milliseconds vs seconds)
+            - Lower memory footprint
+            - No JVM required at runtime
+            Features:
+            - AOT (Ahead-of-Time) compilation
+            - Static analysis for reflection/resources
+            - Native executable generation
+            ========================================
+            -->
+            <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <version>${native.maven.plugin.version}</version>
+                <configuration>
+                    <fallback>false</fallback>                           <!-- Don't fallback to JVM if native fails -->
+                    <verbose>true</verbose>                              <!-- Show detailed compilation output -->
+                    <buildArgs>
+                        <arg>--no-fallback</arg>                         <!-- Strict native-only compilation -->
+                        <arg>--enable-preview</arg>                      <!-- Enable Java preview features -->
+                        <arg>-H:+AddAllCharsets</arg>                    <!-- Include all character sets -->
+                        <arg>-H:EnableURLProtocols=http,https</arg>      <!-- Enable HTTP/HTTPS protocols -->
+                        <arg>-H:+ReportExceptionStackTraces</arg>        <!-- Better error reporting -->
+                        <arg>--allow-incomplete-classpath</arg>          <!-- Handle missing classes gracefully -->
+                    </buildArgs>
+                </configuration>
+            </plugin>
 
+            <!-- 
+            ========================================
+            Maven Surefire Plugin (Unit Tests)
+            ========================================
+            Purpose: Runs unit tests during 'mvn test' phase
+            Scope: Fast, isolated tests (no external dependencies)
+            Test Types:
+            - Pure unit tests (/tests/)
+            - Mock-based tests (/unit/)
+            - Native compatibility tests (/native_tests/)
+            Benefits:
+            - Fast feedback loop for developers
+            - Runs in parallel for speed
+            - Isolated test environment
+            ========================================
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.3</version>
+                <configuration>
+                    <includes>
+                        <!-- Include unit tests from these directories -->
+                        <include>**/tests/**/*Test.java</include>        <!-- Standard unit tests -->
+                        <include>**/unit/**/*Test.java</include>         <!-- Explicit unit tests -->
+                        <include>**/native_tests/**/*Test.java</include> <!-- Native compatibility tests -->
+                    </includes>
+                    <systemPropertyVariables>
+                        <spring.profiles.active>unit</spring.profiles.active>  <!-- Use 'unit' profile for tests -->
+                    </systemPropertyVariables>
+                    <forkedProcessExitTimeoutInSeconds>30</forkedProcessExitTimeoutInSeconds>  <!-- Kill hanging tests -->
+                    <shutdown>kill</shutdown>                                                   <!-- Force shutdown method -->
+                </configuration>
+            </plugin>
 
-		<!-- liquibase -->
+            <!-- 
+            ========================================
+            Maven Failsafe Plugin (Integration Tests)
+            ========================================
+            Purpose: Runs integration tests during 'mvn integration-test' phase
+            Scope: Full system tests with external dependencies
+            Test Types:
+            - Database integration tests
+            - API endpoint tests
+            - Testcontainers-based tests
+            - Full Spring context tests
+            Benefits:
+            - Tests real application behavior
+            - Validates component interactions
+            - Runs after application is fully assembled
+            Lifecycle: integration-test → verify phases
+            ========================================
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.3</version>
+                <configuration>
+                    <includes>
+                        <!-- Include integration tests from this directory -->
+                        <include>**/integration/**/*Test.java</include>   <!-- Full integration tests -->
+                    </includes>
+                    <systemPropertyVariables>
+                        <spring.profiles.active>integration</spring.profiles.active>  <!-- Use 'integration' profile -->
+                    </systemPropertyVariables>
+                    <forkedProcessExitTimeoutInSeconds>60</forkedProcessExitTimeoutInSeconds>  <!-- Longer timeout for complex tests -->
+                    <shutdown>kill</shutdown>                                                   <!-- Force shutdown method -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>                 <!-- Run integration tests -->
+                            <goal>verify</goal>                          <!-- Verify test results -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-		</dependency>
+            <!-- 
+            ========================================
+            Maven Compiler Plugin
+            ========================================
+            Purpose: Compiles Java source code and processes annotations
+            Features:
+            - Compiles .java files to .class files
+            - Processes Lombok annotations (@Data, @Builder, etc.)
+            - Handles annotation processors
+            Benefits:
+            - Enables Lombok code generation
+            - Proper compilation with annotation processing
+            - IDE-independent builds
+            ========================================
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <!-- Lombok annotation processor for code generation -->
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
 
-		<!-- _________________________ -->
+            <!-- 
+            ========================================
+            Spring Boot Maven Plugin
+            ========================================
+            Purpose: Provides Spring Boot-specific Maven goals and packaging
+            Features:
+            - Creates executable JAR files ('fat JARs')
+            - Includes all dependencies in single JAR
+            - Enables 'mvn spring-boot:run' command
+            - Repackages application for easy deployment
+            Benefits:
+            - Single JAR deployment
+            - Embedded server (Tomcat/Jetty)
+            - Easy local development with hot reload
+            - Production-ready packaging
+            ========================================
+            -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <!-- Exclude Lombok from final JAR (only needed at compile time) -->
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
+    <!-- Profiles for different modes -->
+    <profiles>
+        <!-- 
+        ========================================
+        JVM Profile (Default)
+        ========================================
+        Purpose: Standard JVM-based development and testing
+        When Active: By default (activeByDefault=true)
+        Test Strategy: Run ALL tests for comprehensive coverage
+        Use Cases:
+        - Local development
+        - CI/CD pipelines
+        - Full integration testing
+        Benefits:
+        - Complete test coverage
+        - Faster test execution (no native compilation)
+        - Full Spring framework features
+        ========================================
+        -->
+        <profile>
+            <id>jvm</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- Override Surefire to run ALL tests in JVM mode -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <!-- Run ALL test files in JVM mode -->
+                                <include>**/*Test.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
-		<!-- jwt -->
+        <!-- 
+        ========================================
+        Native Profile
+        ========================================
+        Purpose: GraalVM native image compilation and testing
+        When Active: mvn -Pnative
+        Test Strategy: Run only native-compatible tests
+        Exclusions: Skip complex integration tests
+        Use Cases:
+        - Native executable builds
+        - Production deployment preparation
+        - Native compatibility validation
+        Benefits:
+        - Fast application startup
+        - Low memory usage
+        - Native compatibility validation
+        Limitations:
+        - Limited reflection support
+        - Longer build times
+        - Some frameworks may not work
+        ========================================
+        -->
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <!-- 
+                    Skip Failsafe (Integration Tests) in Native Mode
+                    Reason: Integration tests are too complex for native compilation
+                    - Heavy Spring context loading
+                    - Complex reflection usage
+                    - External service dependencies
+                    -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>  <!-- Skip all integration tests -->
+                        </configuration>
+                    </plugin>
+                    
+                    <!-- 
+                    Configure Surefire for Native-Compatible Tests Only
+                    Strategy: Run lightweight, native-friendly tests
+                    -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <!-- ISSUE: Should be **/native_tests/**/*Test.java -->
+                                <include>**/native/**/*Test.java</include>     <!-- ❌ Wrong path -->
+                                <include>**/tests/**/*Test.java</include>      <!-- ✅ Unit tests -->
+                            </includes>
+                            <excludes>
+                                <!-- Explicitly exclude integration tests -->
+                                <exclude>**/integration/**/*Test.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
 
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
-			<version>0.11.5</version>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
-			<version>0.11.5</version>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId>
-			<version>0.11.5</version>
-		</dependency>
-
-		<!-- trackswiflty utils -->
-		<dependency>
-			<groupId>com.trackswiftly.utils</groupId>
-			<artifactId>utils</artifactId>
-			<version>1.0.7</version>
-		</dependency>
-
-		<!-- Add Caffeine dependency -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-cache</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.github.ben-manes.caffeine</groupId>
-			<artifactId>caffeine</artifactId>
-		</dependency>
-
-
-		<!-- Test dependencies -->
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-test</artifactId>
-				<scope>test</scope>
-			</dependency>
-			
-			<dependency>
-				<groupId>org.testcontainers</groupId>
-				<artifactId>postgresql</artifactId>
-				<scope>test</scope>
-			</dependency>
-			
-			<dependency>
-				<groupId>org.testcontainers</groupId>
-				<artifactId>junit-jupiter</artifactId>
-				<scope>test</scope>
-			</dependency>
-
-		<!-- Test dependencies -->
-
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</path>
-					</annotationProcessorPaths>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
+                    <!-- 
+                    Native Image Compilation Plugin
+                    Execution: Runs during 'package' phase
+                    Goal: compile-no-fork (compile without forking new process)
+                    -->
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>  <!-- Build native executable -->
+                                </goals>
+                                <phase>package</phase>           <!-- Run during package phase -->
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
