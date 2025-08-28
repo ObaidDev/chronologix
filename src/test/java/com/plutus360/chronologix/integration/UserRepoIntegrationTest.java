@@ -2,12 +2,9 @@ package com.plutus360.chronologix.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +27,7 @@ import jakarta.persistence.PersistenceContext;
 @SpringBootTest
 @Testcontainers
 @Transactional
+@ActiveProfiles("test")
 class UserRepoIntegrationTest {
 
     @Container
