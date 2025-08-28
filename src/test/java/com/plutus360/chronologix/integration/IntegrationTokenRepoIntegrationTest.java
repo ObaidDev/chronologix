@@ -294,6 +294,7 @@ class IntegrationTokenRepoIntegrationTest {
             .name(name)
             .tokenHash(hash)
             .active(true)
+            .userId(UUID.randomUUID().toString())
             .createdAt(testTime)
             .updatedAt(testTime)
             .expiredAt(testTime.plusDays(30))
