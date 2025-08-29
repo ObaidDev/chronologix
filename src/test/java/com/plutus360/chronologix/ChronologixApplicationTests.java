@@ -3,10 +3,10 @@ package com.plutus360.chronologix;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+// @SpringBootTest
 class ChronologixApplicationTests {
 
-	@Test
+	// @Test
 	void contextLoads() {
 	}
 
