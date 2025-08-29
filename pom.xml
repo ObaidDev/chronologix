@@ -154,173 +154,33 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Add H2 for native tests -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- 
-            ========================================
-            GraalVM Native Image Plugin
-            ========================================
-            Purpose: Compiles Java application to native executable using GraalVM
-            Benefits: 
-            - Faster startup times (milliseconds vs seconds)
-            - Lower memory footprint
-            - No JVM required at runtime
-            Features:
-            - AOT (Ahead-of-Time) compilation
-            - Static analysis for reflection/resources
-            - Native executable generation
-            ========================================
-            -->
+
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
-                <version>${native.maven.plugin.version}</version>
+                <version>0.9.28</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <fallback>false</fallback>                           <!-- Don't fallback to JVM if native fails -->
-                    <verbose>true</verbose>                              <!-- Show detailed compilation output -->
-                    <buildArgs>
-                        <arg>--no-fallback</arg>                         <!-- Strict native-only compilation -->
-                        <arg>--enable-preview</arg>                      <!-- Enable Java preview features -->
-                        <arg>-H:+AddAllCharsets</arg>                    <!-- Include all character sets -->
-                        <arg>-H:EnableURLProtocols=http,https</arg>      <!-- Enable HTTP/HTTPS protocols -->
-                        <arg>-H:+ReportExceptionStackTraces</arg>        <!-- Better error reporting -->
-                        <arg>--allow-incomplete-classpath</arg>          <!-- Handle missing classes gracefully -->
-                    </buildArgs>
-                </configuration>
-            </plugin>
-
-            <!-- 
-            ========================================
-            Maven Surefire Plugin (Unit Tests)
-            ========================================
-            Purpose: Runs unit tests during 'mvn test' phase
-            Scope: Fast, isolated tests (no external dependencies)
-            Test Types:
-            - Pure unit tests (/tests/)
-            - Mock-based tests (/unit/)
-            - Native compatibility tests (/native_tests/)
-            Benefits:
-            - Fast feedback loop for developers
-            - Runs in parallel for speed
-            - Isolated test environment
-            ========================================
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.3</version>
-                <configuration>
-                    <includes>
-                        <!-- Include unit tests from these directories -->
-                        <include>**/tests/**/*Test.java</include>        <!-- Standard unit tests -->
-                        <include>**/unit/**/*Test.java</include>         <!-- Explicit unit tests -->
-                        <include>**/native_tests/**/*Test.java</include> <!-- Native compatibility tests -->
-                    </includes>
-                    <systemPropertyVariables>
-                        <spring.profiles.active>unit</spring.profiles.active>  <!-- Use 'unit' profile for tests -->
-                    </systemPropertyVariables>
-                    <forkedProcessExitTimeoutInSeconds>30</forkedProcessExitTimeoutInSeconds>  <!-- Kill hanging tests -->
-                    <shutdown>kill</shutdown>                                                   <!-- Force shutdown method -->
-                </configuration>
-            </plugin>
-
-            <!-- 
-            ========================================
-            Maven Failsafe Plugin (Integration Tests)
-            ========================================
-            Purpose: Runs integration tests during 'mvn integration-test' phase
-            Scope: Full system tests with external dependencies
-            Test Types:
-            - Database integration tests
-            - API endpoint tests
-            - Testcontainers-based tests
-            - Full Spring context tests
-            Benefits:
-            - Tests real application behavior
-            - Validates component interactions
-            - Runs after application is fully assembled
-            Lifecycle: integration-test → verify phases
-            ========================================
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.5.3</version>
-                <configuration>
-                    <includes>
-                        <!-- Include integration tests from this directory -->
-                        <include>**/integration/**/*Test.java</include>   <!-- Full integration tests -->
-                    </includes>
-                    <systemPropertyVariables>
-                        <spring.profiles.active>integration</spring.profiles.active>  <!-- Use 'integration' profile -->
-                    </systemPropertyVariables>
-                    <forkedProcessExitTimeoutInSeconds>60</forkedProcessExitTimeoutInSeconds>  <!-- Longer timeout for complex tests -->
-                    <shutdown>kill</shutdown>                                                   <!-- Force shutdown method -->
+                    <metadataRepository>
+                        <enabled>true</enabled>
+                    </metadataRepository>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>test-native</id>
                         <goals>
-                            <goal>integration-test</goal>                 <!-- Run integration tests -->
-                            <goal>verify</goal>                          <!-- Verify test results -->
+                            <goal>test</goal>
                         </goals>
+                        <phase>verify</phase>
                     </execution>
                 </executions>
             </plugin>
 
-            <!-- 
-            ========================================
-            Maven Compiler Plugin
-            ========================================
-            Purpose: Compiles Java source code and processes annotations
-            Features:
-            - Compiles .java files to .class files
-            - Processes Lombok annotations (@Data, @Builder, etc.)
-            - Handles annotation processors
-            Benefits:
-            - Enables Lombok code generation
-            - Proper compilation with annotation processing
-            - IDE-independent builds
-            ========================================
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <!-- Lombok annotation processor for code generation -->
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
 
-            <!-- 
-            ========================================
-            Spring Boot Maven Plugin
-            ========================================
-            Purpose: Provides Spring Boot-specific Maven goals and packaging
-            Features:
-            - Creates executable JAR files ('fat JARs')
-            - Includes all dependencies in single JAR
-            - Enables 'mvn spring-boot:run' command
-            - Repackages application for easy deployment
-            Benefits:
-            - Single JAR deployment
-            - Embedded server (Tomcat/Jetty)
-            - Easy local development with hot reload
-            - Production-ready packaging
-            ========================================
-            -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -339,126 +199,5 @@
 
     <!-- Profiles for different modes -->
     <profiles>
-        <!-- 
-        ========================================
-        JVM Profile (Default)
-        ========================================
-        Purpose: Standard JVM-based development and testing
-        When Active: By default (activeByDefault=true)
-        Test Strategy: Run ALL tests for comprehensive coverage
-        Use Cases:
-        - Local development
-        - CI/CD pipelines
-        - Full integration testing
-        Benefits:
-        - Complete test coverage
-        - Faster test execution (no native compilation)
-        - Full Spring framework features
-        ========================================
-        -->
-        <profile>
-            <id>jvm</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <!-- Override Surefire to run ALL tests in JVM mode -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <includes>
-                                <!-- Run ALL test files in JVM mode -->
-                                <include>**/*Test.java</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <!-- 
-        ========================================
-        Native Profile
-        ========================================
-        Purpose: GraalVM native image compilation and testing
-        When Active: mvn -Pnative
-        Test Strategy: Run only native-compatible tests
-        Exclusions: Skip complex integration tests
-        Use Cases:
-        - Native executable builds
-        - Production deployment preparation
-        - Native compatibility validation
-        Benefits:
-        - Fast application startup
-        - Low memory usage
-        - Native compatibility validation
-        Limitations:
-        - Limited reflection support
-        - Longer build times
-        - Some frameworks may not work
-        ========================================
-        -->
-        <profile>
-            <id>native</id>
-            <build>
-                <plugins>
-                    <!-- 
-                    Skip Failsafe (Integration Tests) in Native Mode
-                    Reason: Integration tests are too complex for native compilation
-                    - Heavy Spring context loading
-                    - Complex reflection usage
-                    - External service dependencies
-                    -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <skip>true</skip>  <!-- Skip all integration tests -->
-                        </configuration>
-                    </plugin>
-                    
-                    <!-- 
-                    Configure Surefire for Native-Compatible Tests Only
-                    Strategy: Run lightweight, native-friendly tests
-                    -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <includes>
-                                <!-- ISSUE: Should be **/native_tests/**/*Test.java -->
-                                <include>**/native/**/*Test.java</include>     <!-- ❌ Wrong path -->
-                                <include>**/tests/**/*Test.java</include>      <!-- ✅ Unit tests -->
-                            </includes>
-                            <excludes>
-                                <!-- Explicitly exclude integration tests -->
-                                <exclude>**/integration/**/*Test.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-
-                    <!-- 
-                    Native Image Compilation Plugin
-                    Execution: Runs during 'package' phase
-                    Goal: compile-no-fork (compile without forking new process)
-                    -->
-                    <plugin>
-                        <groupId>org.graalvm.buildtools</groupId>
-                        <artifactId>native-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>build-native</id>
-                                <goals>
-                                    <goal>compile-no-fork</goal>  <!-- Build native executable -->
-                                </goals>
-                                <phase>package</phase>           <!-- Run during package phase -->
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
     </profiles>
 </project>
