@@ -24,6 +24,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import com.plutus360.chronologix.filters.JwtAuthenticationFilter;
@@ -40,6 +41,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("JwtAuthenticationFilter Unit Tests")
+@DisabledInAotMode
 class JwtAuthenticationFilterTest {
 
     @Mock

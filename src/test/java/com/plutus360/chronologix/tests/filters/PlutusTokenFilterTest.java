@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.aot.DisabledInAotMode;
 
 import com.plutus360.chronologix.exception.InvalideTokenException;
 import com.plutus360.chronologix.filters.PlutusTokenFilter;
@@ -36,6 +37,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("PlutusTokenFilter Unit Tests")
+@DisabledInAotMode
 class PlutusTokenFilterTest {
 
     @Mock
