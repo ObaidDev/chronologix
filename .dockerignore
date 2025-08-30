@@ -1,0 +1,52 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+docs/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Build artifacts (except what we need)
+target/
+!target/*.jar
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+
+# Test resources
+src/test/
+
+# Maven wrapper (we use base image with Maven)
+mvnw
+mvnw.cmd
+.mvn/
+
+# Configuration examples
+*.example.*
+redis.conf/
+scripts/
+
+# Other
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
