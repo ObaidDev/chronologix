@@ -30,14 +30,9 @@ public class IntegrationTokenMapper {
 
     public List<IntegrationTokenResponse> toIntegrationTokenResponseList(List<IntegrationToken> integrationTokens) {
 
-        log.debug("IntegrationToken :{} " , integrationTokens);
-
-        List<IntegrationTokenResponse> integrationTokenResponses = integrationTokens.stream()
-                                            .map(this::toIntegrationTokenResponse)
-                                            .toList() ;
-        
-        log.debug("group responses :{} " , integrationTokenResponses);
-        return integrationTokenResponses;
+        return integrationTokens.stream()
+                                .map(this::toIntegrationTokenResponse)
+                                .toList() ;
     }
 
 
