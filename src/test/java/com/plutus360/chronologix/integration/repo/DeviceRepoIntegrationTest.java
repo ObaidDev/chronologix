@@ -1,4 +1,4 @@
-package com.plutus360.chronologix.integration;
+package com.plutus360.chronologix.integration.repo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
