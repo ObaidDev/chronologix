@@ -55,7 +55,9 @@ RUN addgroup --system $APPLICATION_USER &&  adduser --system $APPLICATION_USER -
 # Create the application directory
 RUN mkdir /app && chown -R $APPLICATION_USER /app
 
-COPY --chown=$APPLICATION_USER:$APPLICATION_USER target/*.jar /app/app.jar
+# COPY --chown=$APPLICATION_USER:$APPLICATION_USER target/*.jar /app/app.jar
+
+COPY --from=jre-builder --chown=$APPLICATION_USER:$APPLICATION_USER /opt/app/target/chronologix-0.0.1-SNAPSHOT.jar /app/app.jar
 
 WORKDIR /app
 
