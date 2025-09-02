@@ -12,6 +12,7 @@ import com.plutus360.chronologix.dao.repositories.UserRepo;
 import com.plutus360.chronologix.dtos.LoginUserDto;
 import com.plutus360.chronologix.dtos.RegisterUserDto;
 import com.plutus360.chronologix.entities.User;
+import com.plutus360.chronologix.exception.UnableToProccessIteamException;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,11 @@ public class AuthenticationService {
     @Transactional
     public User signup(RegisterUserDto input) {
 
+        if (userRepository.countUsers() > 0) {
+            log.warn("Signup attempt blocked. A user already exists 🚫");
+            throw new UnableToProccessIteamException("Signup is disabled. An admin user already exists.");
+        }
+
         User user = User.builder()
                 .email(input.getEmail())
                 .password(passwordEncoder.encode(input.getPassword()))
@@ -48,6 +54,7 @@ public class AuthenticationService {
 
         return userRepository.insert(user);
     }
+
 
     public User authenticate(LoginUserDto input) {
 
