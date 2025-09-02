@@ -142,5 +142,11 @@ public class UserRepo {
         }
     }
 
+
+    public long countUsers() {
+        String jpql = "SELECT COUNT(u) FROM User u";
+        return em.createQuery(jpql, Long.class).getSingleResult();
+    }
+
     
 }
