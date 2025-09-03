@@ -2,6 +2,10 @@ package com.plutus360.chronologix.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +18,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService{
 
     private final UserRepo userRepo;
 
@@ -87,6 +91,22 @@ public class UserService {
         } catch (Exception e) {
             log.error("Failed to delete user", e);
             return false;  // Or handle differently
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        try {
+            User user = userRepo.findByUsername(username);
+            if (user == null) {
+                log.error("User not found with username: {}", username);
+                throw new UsernameNotFoundException("User not found with username: " + username);
+            }
+            return user;
+        } catch (Exception e) {
+            log.error("Failed to find user by username", e);
+            throw new UsernameNotFoundException("User not found with username: " + username);
         }
     }
 }
