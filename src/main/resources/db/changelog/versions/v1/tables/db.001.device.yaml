@@ -69,15 +69,13 @@ databaseChangeLog:
                 CONSTRAINT devices_pk PRIMARY KEY (source_device_id, id, event_time)
               ) PARTITION BY RANGE (event_time);
               
-              -- Create initial partitions (adjust date ranges as needed)
-              CREATE TABLE devices_2024 PARTITION OF devices
-              FOR VALUES FROM ('2024-01-01') TO ('2025-01-01');
-              
-              CREATE TABLE devices_2025 PARTITION OF devices
-              FOR VALUES FROM ('2025-01-01') TO ('2026-01-01');
-              
-              CREATE TABLE devices_2026 PARTITION OF devices
-              FOR VALUES FROM ('2026-01-01') TO ('2027-01-01');
+              -- 2) Create monthly partitions for the next 12 months
+              SELECT create_time_partitions(
+                table_name         := 'devices',
+                partition_interval := '1 month',
+                start_from         := date_trunc('month', now())::timestamptz,
+                end_at             := date_trunc('month', now() + interval '12 months')::timestamptz
+              );
               
         - createIndex:
             indexName: device_device_name_idx
