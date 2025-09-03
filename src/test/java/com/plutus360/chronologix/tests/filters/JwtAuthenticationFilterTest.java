@@ -29,6 +29,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import com.plutus360.chronologix.filters.JwtAuthenticationFilter;
 import com.plutus360.chronologix.service.JwtService;
+import com.plutus360.chronologix.service.UserService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -48,7 +49,7 @@ class JwtAuthenticationFilterTest {
     private JwtService mockJwtService;
 
     @Mock
-    private UserDetailsService mockUserDetailsService;
+    private UserService mockUserDetailsService;
 
     @Mock
     private HandlerExceptionResolver mockHandlerExceptionResolver;
