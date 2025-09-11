@@ -35,3 +35,7 @@ build/
 
 *.conf
 *.env
+
+.mvn
+.gradle
+.vscode
