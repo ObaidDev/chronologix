@@ -3,9 +3,7 @@ package com.plutus360.chronologix.tests.web;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.plutus360.chronologix.dtos.DeviceRequest;
 import com.plutus360.chronologix.dtos.DeviceResponse;
-import com.plutus360.chronologix.entities.Device;
 import com.plutus360.chronologix.service.DeviceService;
 import com.plutus360.chronologix.web.DeviceController;
 

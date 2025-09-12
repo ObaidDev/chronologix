@@ -173,9 +173,9 @@ public class DeviceRepo implements BaseDao<Device , Long>{
             sql.append(", jsonb_build_object(");
             for (int i = 0; i < payloadFields.size(); i++) {
                 if (i > 0) sql.append(", ");
-                // Since your payload uses dot notation as literal field names, treat them as simple keys
+                // Use -> instead of ->> to preserve data types
                 sql.append("'").append(payloadFields.get(i)).append("', ")
-                   .append("d.payload->>").append("'").append(payloadFields.get(i)).append("'");
+                .append("d.payload->").append("'").append(payloadFields.get(i)).append("'");
             }
             sql.append(") as selected_payload");
         } else {
