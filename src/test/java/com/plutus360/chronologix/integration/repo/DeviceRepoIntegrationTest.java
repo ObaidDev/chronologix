@@ -30,7 +30,7 @@ import jakarta.persistence.PersistenceContext;
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
-class DeviceRepoIntegrationTest extends AbstractIntegrationTest{
+class DeviceRepoIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
     private DeviceRepo deviceRepo;
@@ -139,6 +139,11 @@ class DeviceRepoIntegrationTest extends AbstractIntegrationTest{
         @SuppressWarnings("unchecked")
         Map<String, Object> payload = (Map<String, Object>) firstDevice.get("payload");
         assertThat(payload).containsOnlyKeys("position.altitude", "movement.status", "battery.voltage");
+
+        // Verify data types and not just string values
+        assertThat(payload.get("position.altitude")).isInstanceOf(Number.class); // Could be Integer, Double, etc.
+        assertThat(payload.get("movement.status")).isInstanceOf(Boolean.class); // If this should be a string
+        assertThat(payload.get("battery.voltage")).isInstanceOf(Number.class);
     }
 
     @Test
