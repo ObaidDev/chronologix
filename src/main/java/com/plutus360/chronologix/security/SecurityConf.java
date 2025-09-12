@@ -77,7 +77,6 @@ public class SecurityConf {
 
         http
         .cors(cors -> cors.configurationSource(corsConfigurationSource))
-        .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests( authorize  ->  {
                 authorize.requestMatchers(AUTH_WHITELIST).permitAll() ;
                 authorize.anyRequest().authenticated() ;
