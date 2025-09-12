@@ -87,5 +87,5 @@ jobs:
           script: |
             mkdir -p ~/app
             mv ./deploy/*.jar ~/app/myapp.jar
-            sudo systemctl restart my-java-app.service
+            sudo systemctl restart chronologix.service
 
