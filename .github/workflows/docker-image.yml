@@ -27,4 +27,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/chronologix:$(date +%s)
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/chronologix:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/chronologix:${{ github.sha }}
+
