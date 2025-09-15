@@ -75,8 +75,13 @@ public class DeviceService {
         List<Long> ids, long from, long to, List<String> payloadFields
     ) {
 
-        OffsetDateTime fromTime = Instant.ofEpochSecond(from).atOffset(ZoneOffset.UTC);
-        OffsetDateTime toTime = Instant.ofEpochSecond(to).atOffset(ZoneOffset.UTC);
+        // OffsetDateTime fromTime = Instant.ofEpochSecond(from).atOffset(ZoneOffset.UTC);
+        // OffsetDateTime toTime = Instant.ofEpochSecond(to).atOffset(ZoneOffset.UTC);
+
+
+        Instant fromTime = Instant.ofEpochSecond(from);
+        Instant toTime = Instant.ofEpochSecond(to);
+
 
         return deviceRepo.findDevicesWithJsonbSelection(ids, payloadFields, fromTime, toTime);
     }
