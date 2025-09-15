@@ -29,5 +29,5 @@ jobs:
         push: true
         tags: |
           ${{ secrets.DOCKERHUB_USERNAME }}/chronologix:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/chronologix:${{ github.sha }}
+          ${{ secrets.DOCKERHUB_USERNAME }}/chronologix:${{ github.run_number }}
 
