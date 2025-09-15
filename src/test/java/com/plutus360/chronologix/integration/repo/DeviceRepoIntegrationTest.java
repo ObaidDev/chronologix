@@ -125,8 +125,8 @@ class DeviceRepoIntegrationTest extends AbstractIntegrationTest {
         // Arrange
         List<Long> ids = Arrays.asList(5842962L);
         List<String> fields = Arrays.asList("position.altitude", "movement.status", "battery.voltage");
-        Instant from = testTime.minusHours(1).toInstant();
-        Instant to = testTime.plusHours(1).toInstant();
+        OffsetDateTime from = testTime.minusHours(1);
+        OffsetDateTime to = testTime.plusHours(1);
 
         // Act
         List<Map<String, Object>> result = deviceRepo.findDevicesWithJsonbSelection(ids, fields, from, to);
@@ -151,8 +151,8 @@ class DeviceRepoIntegrationTest extends AbstractIntegrationTest {
     void testFindDevicesWithJsonbSelection_allFields() {
         // Arrange
         List<Long> ids = Arrays.asList(5842962L);
-        Instant from = testTime.minusHours(1).toInstant();
-        Instant to = testTime.plusHours(1).toInstant();
+         OffsetDateTime from = testTime.minusHours(1);
+        OffsetDateTime to = testTime.plusHours(1);
 
         // Act - passing null for payloadFields should return all fields
         List<Map<String, Object>> result = deviceRepo.findDevicesWithJsonbSelection(ids, null, from, to);

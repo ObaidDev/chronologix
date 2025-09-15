@@ -126,8 +126,8 @@ class DeviceServiceTest {
         when(deviceRepo.findDevicesWithJsonbSelection(
                 eq(ids),
                 eq(fields),
-                any(Instant.class),
-                any(Instant.class))
+                any(OffsetDateTime.class),
+                any(OffsetDateTime.class))
         ).thenReturn(repoResult);
 
         // Act
@@ -139,8 +139,8 @@ class DeviceServiceTest {
         verify(deviceRepo).findDevicesWithJsonbSelection(
                 eq(ids),
                 eq(fields),
-                any(Instant.class),
-                any(Instant.class)
+                any(OffsetDateTime.class),
+                any(OffsetDateTime.class)
         );
     }
 
