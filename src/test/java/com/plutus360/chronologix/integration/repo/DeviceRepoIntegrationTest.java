@@ -2,6 +2,7 @@ package com.plutus360.chronologix.integration.repo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -124,8 +125,8 @@ class DeviceRepoIntegrationTest extends AbstractIntegrationTest {
         // Arrange
         List<Long> ids = Arrays.asList(5842962L);
         List<String> fields = Arrays.asList("position.altitude", "movement.status", "battery.voltage");
-        OffsetDateTime from = testTime.minusHours(1);
-        OffsetDateTime to = testTime.plusHours(1);
+        Instant from = testTime.minusHours(1).toInstant();
+        Instant to = testTime.plusHours(1).toInstant();
 
         // Act
         List<Map<String, Object>> result = deviceRepo.findDevicesWithJsonbSelection(ids, fields, from, to);
@@ -150,8 +151,8 @@ class DeviceRepoIntegrationTest extends AbstractIntegrationTest {
     void testFindDevicesWithJsonbSelection_allFields() {
         // Arrange
         List<Long> ids = Arrays.asList(5842962L);
-        OffsetDateTime from = testTime.minusHours(1);
-        OffsetDateTime to = testTime.plusHours(1);
+        Instant from = testTime.minusHours(1).toInstant();
+        Instant to = testTime.plusHours(1).toInstant();
 
         // Act - passing null for payloadFields should return all fields
         List<Map<String, Object>> result = deviceRepo.findDevicesWithJsonbSelection(ids, null, from, to);

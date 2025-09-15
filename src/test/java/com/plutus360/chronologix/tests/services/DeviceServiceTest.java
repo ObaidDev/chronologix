@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -125,8 +126,8 @@ class DeviceServiceTest {
         when(deviceRepo.findDevicesWithJsonbSelection(
                 eq(ids),
                 eq(fields),
-                any(OffsetDateTime.class),
-                any(OffsetDateTime.class))
+                any(Instant.class),
+                any(Instant.class))
         ).thenReturn(repoResult);
 
         // Act
@@ -138,8 +139,8 @@ class DeviceServiceTest {
         verify(deviceRepo).findDevicesWithJsonbSelection(
                 eq(ids),
                 eq(fields),
-                any(OffsetDateTime.class),
-                any(OffsetDateTime.class)
+                any(Instant.class),
+                any(Instant.class)
         );
     }
 
