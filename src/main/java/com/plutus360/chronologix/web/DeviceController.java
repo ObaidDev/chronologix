@@ -77,7 +77,7 @@ public class DeviceController {
 
         log.info("Searching devices with IDs: {} from {} to {} with fields: {}", ids, from, to, fields);
 
-        return deviceService.findByIdsAndTimeRangeWithFieldsSelection(ids, from, to, fields);
+        return deviceService.findByIdsAndTimeRangeWithFieldsSelection(ids, from, to, fields );
     }
 
 }

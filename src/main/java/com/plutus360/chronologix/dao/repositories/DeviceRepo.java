@@ -120,8 +120,8 @@ public class DeviceRepo implements BaseDao<Device , Long>{
     public List<Map<String, Object>> findDevicesWithJsonbSelection(
         List<Long> ids, 
         List<String> payloadFields,
-        Instant from,
-        Instant to) {
+        OffsetDateTime from,
+        OffsetDateTime to) {
 
         if (ids == null || ids.isEmpty()) {
             return Collections.emptyList();
@@ -166,7 +166,7 @@ public class DeviceRepo implements BaseDao<Device , Long>{
             .collect(java.util.stream.Collectors.toList());
     }
 
-    private String buildSelectQuery(List<String> payloadFields, Instant from, Instant to) {
+    private String buildSelectQuery(List<String> payloadFields, OffsetDateTime from, OffsetDateTime to) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT d.id, d.source_device_id, d.device_name, d.ident, d.event_time");
         
