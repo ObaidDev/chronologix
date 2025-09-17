@@ -1,6 +1,5 @@
 package com.plutus360.chronologix.dao.repositories;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +29,8 @@ public class DeviceRepo implements BaseDao<Device , Long>{
 
     @Value("${spring.jpa.properties.hibernate.jdbc.batch_size}")
     private  int batchSize ;
+
+    private static final String KEY_NAME_OF_TELEMETRY_DATA = "payload" ;
 
 
     @PersistenceContext
@@ -163,7 +164,7 @@ public class DeviceRepo implements BaseDao<Device , Long>{
             // Allow dots, letters, numbers, underscores since your fields use dot notation
             .filter(field -> field.matches("^[a-zA-Z_][a-zA-Z0-9_\\.]*$"))
             .distinct()
-            .collect(java.util.stream.Collectors.toList());
+            .toList();
     }
 
     private String buildSelectQuery(List<String> payloadFields, OffsetDateTime from, OffsetDateTime to) {
@@ -211,13 +212,13 @@ public class DeviceRepo implements BaseDao<Device , Long>{
                 try {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> payloadMap = objectMapper.readValue(payloadStr, Map.class);
-                    deviceData.put("payload", payloadMap);
+                    deviceData.put(KEY_NAME_OF_TELEMETRY_DATA, payloadMap);
                 } catch (Exception e) {
                     log.error("Failed to parse JSON payload: {}", payloadObj, e);
-                    deviceData.put("payload", payloadObj);
+                    deviceData.put(KEY_NAME_OF_TELEMETRY_DATA, payloadObj);
                 }
             } else {
-                deviceData.put("payload", payloadObj);
+                deviceData.put(KEY_NAME_OF_TELEMETRY_DATA, payloadObj);
             }
             
             return deviceData;
