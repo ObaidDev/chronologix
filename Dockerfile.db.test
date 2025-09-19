@@ -1,0 +1,28 @@
+FROM citusdata/citus:12.1
+
+USER root
+
+# Install pg_cron in one layer, clean up afterwards
+RUN apt-get update -qq \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+       postgresql-15-cron \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+
+
+# Fix permissions for Testcontainers
+RUN mkdir -p /var/lib/postgresql/data \
+    && chown -R postgres:postgres /var/lib/postgresql/data
+
+    
+    
+RUN echo "shared_preload_libraries = 'citus,pg_cron'" >> /usr/share/postgresql/postgresql.conf.sample
+
+USER postgres
+
+# Override entrypoint to initialize extensions
+ENTRYPOINT ["sh", "-c", "\
+    docker-entrypoint.sh postgres & \
+    until pg_isready; do sleep 0.1; done; \
+    psql -v ON_ERROR_STOP=1 -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\" -c 'CREATE EXTENSION IF NOT EXISTS citus;' \
+    -c 'CREATE EXTENSION IF NOT EXISTS pg_cron;' \
+    && fg"]
