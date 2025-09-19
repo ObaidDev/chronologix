@@ -5,13 +5,24 @@ import java.util.Map;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.utility.DockerImageName;
 
 public abstract class AbstractIntegrationTest {
 
     private static final PostgreSQLContainer<?> POSTGRES_CONTAINER;
 
     static {
-        POSTGRES_CONTAINER = new PostgreSQLContainer<>("postgres:15-alpine")
+
+        DockerImageName citusImage = DockerImageName.parse("citusdata/citus:12.1")
+            .asCompatibleSubstituteFor("postgres");
+
+        /*
+        *    old version of testcontainers with postgres 15
+        */    
+        // POSTGRES_CONTAINER = new PostgreSQLContainer<>("postgres:15-alpine")
+
+
+        POSTGRES_CONTAINER = new PostgreSQLContainer<>(citusImage)
                 .withDatabaseName("testdb")
                 .withUsername("test")
                 .withPassword("test")
