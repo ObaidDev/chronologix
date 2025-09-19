@@ -69,14 +69,6 @@ databaseChangeLog:
                 CONSTRAINT devices_pk PRIMARY KEY (source_device_id, id, event_time)
               ) PARTITION BY RANGE (event_time);
               
-# -- 2) Create monthly partitions for the next 12 months
-# SELECT create_time_partitions(
-#   table_name         := 'devices',
-#   partition_interval := '1 month',
-#   start_from         := date_trunc('month', now())::timestamptz,
-#   end_at             := date_trunc('month', now() + interval '12 months')::timestamptz
-# );
-              
         - createIndex:
             indexName: device_device_name_idx
             tableName: devices
@@ -133,3 +125,17 @@ databaseChangeLog:
           tableName: devices
           columnName: id
           defaultValueSequenceNext: device_id_seq
+
+  - changeSet:
+      id: "1.0.0-9-add-brin-index-on-eventtime-devices-table"
+      author: obaid
+      changes:
+        - createIndex:
+            indexName: devices_event_time_brin_idx
+            tableName: devices
+            columns:
+              - column:
+                  name: event_time
+            using: brin
+            # Optional: specify PostgreSQL-specific options
+            clustered: false  # Only B-tree can be clustered, safe to leave false

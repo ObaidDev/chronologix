@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1.0.0-10-create_time_partitions"
+      author: zeke
+      comment: create time partitions
+      changes:
+        - sql:
+            sql: |
+              SELECT create_distributed_table('devices', 'source_device_id');
+              
+        - sql:
+            sql: |
+              SELECT create_time_partitions(
+                table_name         := 'devices',
+                partition_interval := '1 month',
+                end_at             := now() + '12 months'
+              );
+
+
+        # - sql:
+        #     comment: Schedule yearly partition creation for GitHub events
+        #     sql: |
+        #       SELECT cron.schedule('create-partitions', '0 0 1 * *', $$
+        #         SELECT create_time_partitions(
+        #             table_name         := 'github_events',
+        #             partition_interval := '1 month',
+        #             end_at             := now() + '12 months'
+        #         )
+        #       $$);
